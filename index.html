@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>express_code</title>
+  </head>
+  <body>
+    <label for="cars">Choose a lang of code:</label>
+    <select name="lang" id="lang">
+        <option>js</option>
+        <option>cpp</option>
+        <option>py</option>
+      </select>
+    <textarea id="text" cols="60" rows="8"></textarea>
+    <h2 id="greet">output will be here;</h1>
+    <input id="btn" type="button" value="COMPILE" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/script.js"></script>
+    <script>
+// document.getElementById('text').value = `write down your code here(PRESS TAB or click here)`
+// document.getElementById('text').addEventListener('focus', ()=>{
+//     if(document.getElementById('text').value == `write down your code here(PRESS TAB or click here)`){document.getElementById('text').value = ''}
+
+    
+// })
+
+      document.getElementById("btn").addEventListener("click", () => {
+        console.log("btn clicked");
+        document.getElementById("greet").innerText = 'reading your code, be patient'
+        console.log(`https://compiler.mantragohil.repl.co/run?language=${document.getElementById('lang').value}&code=${document.getElementById('text').value}`)
+        
+        fetch(
+          `https://compiler.mantragohil.repl.co/run?language=${document.getElementById('lang').value}&code=${document.getElementById('text').value}`,
+          {
+            method: "POST",
+            body: document.getElementById('text').value,
+          }
+        ).then((res) => {
+          res.json().then((rezz) => {
+            console.log(rezz);
+            document.getElementById("greet").innerText = rezz.output || 'err: '+rezz.err || 'err: '+rezz.err.err.stderr
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
