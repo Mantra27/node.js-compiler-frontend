@@ -33,10 +33,10 @@
         console.log(`https://compiler.mantragohil.repl.co/run?language=${document.getElementById('lang').value}&code=${document.getElementById('text').value}`)
         
         fetch(
-          `https://compiler.mantragohil.repl.co/run?language=${document.getElementById('lang').value}&code=${document.getElementById('text').value}`,
+          `https://compiler.mantragohil.repl.co/run`,
           {
             method: "POST",
-            body: document.getElementById('text').value,
+            body: {document.getElementById('lang').value,document.getElementById('text').value}
           }
         ).then((res) => {
           res.json().then((rezz) => {
