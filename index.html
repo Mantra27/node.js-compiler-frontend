@@ -65,10 +65,11 @@ int main()
       document.getElementById("btn").addEventListener("click", () => {
         console.log("btn clicked");
         document.getElementById("greet").innerText = 'reading your code, be patient'
+        document.getElementById("greet").style.color = 'black'
         console.log(`https://compiler.mantragohil.repl.co/run`)
     
         fetch(
-          `https://compiler.mantragohil.repl.co/run`,
+          `http://localhost:6969/run`,
           {
             headers: {
             'Content-Type': 'application/json'
@@ -79,7 +80,23 @@ int main()
         ).then((res) => {
           res.json().then((rezz) => {
             console.log(rezz);
-            document.getElementById("greet").innerText = rezz.output || 'err: '+rezz.err || 'err: '+rezz.err.err.stderr
+            if(rezz.err !== undefined){
+              if(rezz.err.stderr == undefined){
+                document.getElementById("greet").innerText = 'input err: '+ rezz.err
+              }
+              else{
+
+                document.getElementById("greet").innerText ='compilation err: '+ rezz.err.stderr
+              }
+              document.getElementById("greet").style.color = 'red'
+            }
+            else if(rezz.output !== undefined){
+              document.getElementById("greet").style.color = 'green'
+              document.getElementById("greet").innerText =rezz.output 
+            }
+            else{
+              document.getElementById("greet").innerText =rezz.tip +" --//-- "+ 'Detected lang: '+rezz.detectedLanguage
+            }
           });
         });
       });
