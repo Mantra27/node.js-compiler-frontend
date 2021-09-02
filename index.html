@@ -10,10 +10,14 @@
   <body>
     <label for="cars">Choose a lang of code:</label>
     <select name="lang" id="lang">
-        <option>js</option>
-        <option>cpp</option>
-        <option>py</option>
-      </select>
+      <option>js</option>
+      <option>cpp</option>
+      <option>py</option>
+      <option>c</option>
+    </select>
+    <br>
+    👇 for newbie (choose a lang and press "get example code");
+    <input id="de" type="button" value="get example code" />
     <textarea id="text" cols="60" rows="8"></textarea>
     <h2 id="greet">output will be here;</h1>
     <input id="btn" type="button" value="COMPILE" />
@@ -26,17 +30,51 @@
 
     
 // })
+  document.getElementById('de').addEventListener('click', ()=>{
+    if(document.getElementById('lang').value == 'js'){
+      document.getElementById('text').value = "for(let count=0; count<10; count++){\nconsole.log(`Hi, ${count}`)\n}"
+    }
+    if(document.getElementById('lang').value == 'cpp'){
+      document.getElementById('text').value = `#include<iostream>
+using namespace std;
+int main()
+{
+  for(int count=0; count<10; count++){
+	cout<<"Hello World "<<count<<endl;
+  }
+	return 0;
+}`
+    }
+    if(document.getElementById('lang').value == 'c'){
+      document.getElementById('text').value = `#include<stdio.h>
+int main()
+{
+  for(int count=0; count<10; count++){
+  printf("Hello World\\n");
+  }
+	return 0;
+}
 
+`
+    }
+    if(document.getElementById('lang').value == 'py'){
+      document.getElementById('text').value = `for x in range(10):
+  print('Hi,', x)`
+    }
+  })
       document.getElementById("btn").addEventListener("click", () => {
         console.log("btn clicked");
         document.getElementById("greet").innerText = 'reading your code, be patient'
-        console.log(`https://compiler.mantragohil.repl.co/run?language=${document.getElementById('lang').value}&code=${document.getElementById('text').value}`)
-        
+        console.log(`https://compiler.mantragohil.repl.co/run`)
+    
         fetch(
           `https://compiler.mantragohil.repl.co/run`,
           {
+            headers: {
+            'Content-Type': 'application/json'
+            },
             method: "POST",
-            body: {document.getElementById('lang').value,document.getElementById('text').value}
+            body: JSON.stringify({language: document.getElementById('lang').value, code: document.getElementById('text').value})
           }
         ).then((res) => {
           res.json().then((rezz) => {
